@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Calculator Project 20210328</title>
+		<link rel="stylesheet" href="../node_modules/normalize.css" />
+		<link rel="stylesheet" href="stylesheet.css" />
+	</head>
+	<body>
+		<div class="project-window">
+			<div class="project-canvas">
+				<form id="calc__form">
+					<div id="calc">
+						<div id="calc__output-grid">
+							<div id="calc__previous-calculation">0</div>
+							<input id="calc__input" type="text" for="calc__form" />
+						</div>
+						<div id="calc__btn-grid">
+							<button id="btn__all-clear" class="btn grid-span-2">AC</button>
+							<button id="btn__delete" class="btn">DEL</button>
+							<button class="btn btn__operator">+</button>
+							<button class="btn btn__num">1</button>
+							<button class="btn btn__num">2</button>
+							<button class="btn btn__num">3</button>
+							<button class="btn btn__operator">–</button>
+							<button class="btn btn__num">4</button>
+							<button class="btn btn__num">5</button>
+							<button class="btn btn__num">6</button>
+							<button class="btn btn__operator">/</button>
+							<button class="btn btn__num">7</button>
+							<button class="btn btn__num">8</button>
+							<button class="btn btn__num">9</button>
+							<button class="btn btn__operator">*</button>
+							<button class="btn btn__num">.</button>
+							<button class="btn btn__num">0</button>
+							<button id="btn__calculate" class="btn grid-span-2">=</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script src="./app.js"></script>
+	</body>
+</html>

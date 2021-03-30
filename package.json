@@ -1,0 +1,22 @@
+{
+  "name": "calculator-project-20210328",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmcdermottsweeney/calculator-project-20210328.git"
+  },
+  "author": "JMS",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jmcdermottsweeney/calculator-project-20210328/issues"
+  },
+  "homepage": "https://github.com/jmcdermottsweeney/calculator-project-20210328#readme",
+  "dependencies": {
+    "normalize.css": "^8.0.1"
+  }
+}

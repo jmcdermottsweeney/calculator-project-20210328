@@ -1,0 +1,88 @@
+* {
+	box-sizing: border-box;
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+.project-window {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+.project-canvas {
+	margin: 0 auto;
+	padding: 0.25em;
+	border-radius: 10px;
+	background: red;
+}
+
+@media screen and (min-width: 768px) {
+	.project-window {
+		height: 100vh;
+		justify-content: center;
+		align-content: center;
+	}
+	.project-canvas {
+		width: 300px;
+		justify-content: center;
+	}
+}
+
+#calc__btn-grid {
+	display: grid;
+	grid-template: 1fr / repeat(4, 1fr);
+	align-content: center;
+}
+
+.btn {
+	margin: 0.25em;
+	padding: 1em;
+	outline: none;
+	border: none;
+	border-radius: 100px;
+	font-size: 1em;
+	font-weight: 700;
+	background: orange;
+	&:hover {
+		cursor: pointer;
+		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+	}
+}
+
+.grid-span-2 {
+	grid-column: span 2;
+}
+
+#calc__output-grid {
+	display: flex;
+	flex-flow: column wrap;
+	justify-content: space-between;
+	align-items: flex-end;
+	margin: 0.25em;
+	padding: 0.5em;
+	background: black;
+}
+
+#calc__previous-calculation {
+	color: white;
+	font-size: 1em;
+	opacity: 0;
+	&.active {
+		opacity: 1;
+	}
+}
+
+#calc__current-operand {
+	color: white;
+	font-size: 3em;
+}
+
+#calc__input {
+	width: 100%;
+	border: none;
+	outline: none;
+	background: none;
+	color: white;
+	font-size: 3em;
+	text-align: right;
+}
