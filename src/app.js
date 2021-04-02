@@ -1,109 +1,94 @@
 // Project guide: https://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Calculator-App.md
 
 let el = (element) => {
-    // If passed an id
-    if (element.charAt(0) === '#') {
-        return document.querySelector(element);
+  // If passed an id
+  if (element.charAt(0) === "#") {
+    return document.querySelector(element);
+  }
+  // Otherwise get a nodelist of class
+  return document.querySelectorAll(element);
+};
+
+const form = el("#calc__form"),
+  input = el("#calc__input"),
+  numbers = el(".btn__num"),
+  operators = el(".btn__operator"),
+  allClear = el("#btn__all-clear"),
+  del = el("#btn__delete"),
+  previousCalc = el("#calc__previous-calculation");
+
+let inputVal = "",
+  validOpr = new RegExp(/^[\+\-\*\/]$/),
+  currentOperator = undefined,
+  oldOperator = undefined,
+  validNum = new RegExp(/^[\d\.]$/),
+  newNum = undefined,
+  oldNum = undefined,
+  resultNum = 0;
+
+let validateInputVal = (val) => {
+  for (let i = 0; i < val.length; i++) {
+    if (
+      !validNum.test(val[i]) ||
+      (val[i] === "." && val.indexOf(".") !== -1)
+    ) {
+       val = val.slice(i,2);
     }
-    // Otherwise get a nodelist of class
-    return document.querySelectorAll(element);
-}
-
-let form = el('#calc__form'),
-    input = el('#calc__input'),
-    previousCalc = el('#calc__previous-calculation'),
-    numbers = el('.btn__num'),
-    operators = el('.btn__operator'),
-    allClear = el('#btn__all-clear'),
-    del = el('#btn__delete'),
-    currentOperator = undefined,
-    oldOperator = undefined,
-    newNum = undefined,
-    oldNum = undefined,
-    resultNum = 0;
-
-let formSubmit = form.addEventListener('submit', function (event) {
-    event.preventDefault();
-    if (input.value.length !== 0) {
-        setNum(input.value);
-        seePreviousCalc();
+    if (validOpr.test(val[i])) {
+      console.log("Detected a valid operator");
     }
-});
-
-numbers.forEach(e => e.onclick = () => {
-    (e.innerHTML === '.' && input.value.indexOf('.') !== -1) ? false : input.value += e.innerHTML;
-});
-
-operators.forEach(e => e.onclick = () => {
-    currentOperator = e.innerHTML;
-    input.value = '';
-    console.log('Operator: ' + currentOperator);
-});
-
-let setNum = (val) => {
-    if (newNum !== undefined) {
-        oldNum = newNum;
-        newNum = val;
-    } else {
-        newNum = val;
-    }
-    // console.log('New value: ' + newNum);
-    // console.log('Old value: ' + oldNum);
-}
-
-let seePreviousCalc = () => {
-    if (newNum !== undefined && oldNum !== undefined) {
-        previousCalc.innerHTML = oldNum + ' ' + currentOperator + ' ' + newNum;
-    } else if (oldNum === undefined) {
-        previousCalc.innerHTML = newNum;
-    } else {
-        previousCalc.innerHTML = '0';
-    }
-}
+  }
+  input.value = val;
+  console.log(val);
+};
 
 // checks that the input key is a valid number 0-9, or a decimal value
-let typingNumbers = input.onkeypress = (event) => {
-    let char = event.key;
-    let approvedNums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'];
-    let approvedOps = ['+', '-', '*', '/'];
+let inputNums = (input.onkeypress = (event) => {
+  let char = String.fromCharCode(event.which);
+  inputVal += char;
+  input.value = '';
+  validateInputVal(inputVal);
+  // if (
+  //   !validNum.test(char) ||
+  //   (char === "." && input.value.indexOf(".") !== -1)
+  // ) {
+  //   event.preventDefault();
+  // } else {
+  //   inputVal += char;
+  // }
+  // if (validOpr.test(char)) {
+  //   console.log("Detected a valid operator");
+  // }
+});
 
-    approvedNums.every(e => {
-        console.log(e);
-        if (checkChar(char, e)) {
-            return true;
-        } return false;
-    });
+let clickNums = numbers.forEach(
+  (el) =>
+    (el.onclick = () => {
+      inputVal += el.innerHTML;
+      validateInputVal(inputVal);
+    })
+);
 
-    // let char = (event.which) ? event.which : event.keyCode;
-    // if (char === 46) {
-    //     if (input.value.indexOf('.') === -1) {
-    //         return true;
-    //     } return false;
-    // }
-    // if (char !== 46 && char > 31 && (char < 48 || char > 57)) {
-    //     return false;
-    // } else {
-    //     return true;
-    // }
-}
+let clickOprs = operators.forEach(
+  (el) =>
+    (el.onclick = () => {
+      currentOperator = el.innerHTML;
+      newNum = input.value;
+      console.log("Operator: " + currentOperator);
+    })
+);
 
-let checkChar = (char, filter) => {
-    if (char === filter) {
-        return true;
-    } return false;
-}
+let clickAC = (allClear.onclick = () => {
+  form.reset();
+  previousCalc.innerHTML = "0";
+  newNum = undefined;
+  oldNum = undefined;
+  currentOperator = undefined;
+  oldOperator = undefined;
+});
 
-allClear.onclick = () => {
-    form.reset();
-    previousCalc.innerHTML = '0';
-    newNum = undefined;
-    oldNum = undefined;
-    currentOperator = undefined;
-    oldOperator = undefined;
-}
-
-del.onclick = () => {
-    if (input.value.length !== 0) {
-        input.value = input.value.slice(0, (input.value.length - 1));
-    }
-}
+let clickDel = (del.onclick = () => {
+  if (input.value.length !== 0) {
+    input.value = input.value.slice(0, input.value.length - 1);
+  }
+});
