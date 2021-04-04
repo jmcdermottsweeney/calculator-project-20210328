@@ -29,10 +29,13 @@ let inputVal = '',
   resultNum = 0;
 
 let validateInputVal = (val) => {
+  inputVal = val;
   for (let i = 0; i < val.length; i++) {
-    if (validOpr.test(val[i])) {
-      console.log('Valid operator detected: ' + val[i]);
-    } else if (
+    if (validOpr.test(val[i]) && val[i] !== '.') {
+      currentOpr = val[i];
+      console.log('Valid operator detected: ' + currentOpr);
+    }
+    if (
       !validNum.test(val[i]) ||
       (val[i] === '.' && val.split('.').length - 1 > 1)
     ) {
@@ -45,12 +48,16 @@ let validateInputVal = (val) => {
 };
 
 // checks that the input key is a valid number 0-9, or a decimal value
-let inputNums = (input.onkeypress = (event) => {
+let inputNums = (input.onkeydown = (event) => {
+  event.preventDefault();
   let char = String.fromCharCode(event.which);
+  console.log(char);
   inputVal += char;
   console.log('Typed value is: ' + inputVal);
   inputVal = validateInputVal(inputVal);
   input.value = inputVal;
+  console.log('input.value is: ' + input.value);
+  console.log('====');
 });
 
 let clickNums = numbers.forEach(
@@ -60,6 +67,8 @@ let clickNums = numbers.forEach(
       console.log('Clicked value is: ' + inputVal);
       inputVal = validateInputVal(inputVal);
       input.value = inputVal;
+      console.log('input.value is: ' + input.value);
+      console.log('====');
     })
 );
 
