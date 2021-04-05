@@ -20,52 +20,57 @@ const form = el('#calc__form'),
 form.addEventListener('submit', (event) => event.preventDefault());
 
 let inputVal = '',
-  validOpr = new RegExp(/^[\+\-\*\/]$/),
   currentOpr = undefined,
   oldOpr = undefined,
-  validNum = new RegExp(/^[\d\.]$/),
   newNum = undefined,
   oldNum = undefined,
   resultNum = 0;
 
 let validateInputVal = (val) => {
-  inputVal = val;
-  for (let i = 0; i < val.length; i++) {
-    if (validOpr.test(val[i]) && val[i] !== '.') {
-      currentOpr = val[i];
-      console.log('Valid operator detected: ' + currentOpr);
+  if (val >= 48 && val <= 57) {
+    console.log('Valid number char: ' + String.fromCharCode(val));
+    val = String.fromCharCode(val);
+  } else if (val >= 96 && val <= 105) {
+    val -= 48;
+    val = String.fromCharCode(val);
+    console.log('Valid number char: ' + String.fromCharCode(val));
+  } else if (val === 46 || val === 110 || val === 190) {
+    if (inputVal.split('.').length - 1 === 1) {
+      val = '';
+    } else {
+      val = '.';
     }
-    if (
-      !validNum.test(val[i]) ||
-      (val[i] === '.' && val.split('.').length - 1 > 1)
-    ) {
-      console.log(val[i] + ' is not a valid character');
-      val = val.substr(0, val.length - 1);
-    }
+  } else {
+    console.log('Invalid char: ' + val);
+    val = '';
   }
-  console.log('Validated value is: ' + val);
   return val;
 };
 
 // checks that the input key is a valid number 0-9, or a decimal value
 let inputNums = (input.onkeydown = (event) => {
   event.preventDefault();
-  let char = String.fromCharCode(event.which);
-  console.log(char);
-  inputVal += char;
-  console.log('Typed value is: ' + inputVal);
-  inputVal = validateInputVal(inputVal);
-  input.value = inputVal;
-  console.log('input.value is: ' + input.value);
-  console.log('====');
+  let char = event.which;
+  console.log(event.key);
+  if (char === 8) {
+    input.value = input.value.substr(0, input.value.length - 1);
+    inputVal = input.value;
+    console.log('Updated value is: ' + input.value);
+  } else {
+    console.log('Char code is: ' + char);
+    inputVal += validateInputVal(char);
+    console.log('Number of decimals: ' + (inputVal.split('.').length - 1));
+    input.value = inputVal;
+    console.log('inputVal is: ' + inputVal);
+    console.log('====');
+  }
 });
 
 let clickNums = numbers.forEach(
   (el) =>
     (el.onclick = () => {
-      inputVal += el.innerHTML;
-      console.log('Clicked value is: ' + inputVal);
-      inputVal = validateInputVal(inputVal);
+      console.log('Clicked value is: ' + el.innerHTML.charCodeAt(0));
+      inputVal += validateInputVal(el.innerHTML.charCodeAt(0));
       input.value = inputVal;
       console.log('input.value is: ' + input.value);
       console.log('====');
@@ -83,6 +88,8 @@ let clickNums = numbers.forEach(
 
 let clickAC = (allClear.onclick = () => {
   form.reset();
+  inputVal = '';
+  input.value = '';
   previousCalc.innerHTML = '0';
   newNum = undefined;
   oldNum = undefined;
@@ -93,5 +100,8 @@ let clickAC = (allClear.onclick = () => {
 let clickDel = (del.onclick = () => {
   if (input.value.length !== 0) {
     input.value = input.value.slice(0, input.value.length - 1);
+    inputVal = input.value;
+    console.log(input.value);
+    console.log(inputVal);
   }
 });
